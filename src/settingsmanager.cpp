@@ -1,0 +1,72 @@
+#include "settingsmanager.h"
+#include "constants.h"
+
+#include <QDir>
+#include <QStandardPaths>
+
+SettingsManager &SettingsManager::instance()
+{
+    static SettingsManager instance;
+    return instance;
+}
+
+SettingsManager::SettingsManager()
+    : m_settings(nullptr)
+{
+    QDir dir(configDirPath());
+    if (!dir.exists()) {
+        dir.mkpath(".");
+    }
+    m_settings = new QSettings(configFilePath(), QSettings::IniFormat);
+}
+
+QString SettingsManager::configDirPath()
+{
+    QString configPath = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation);
+    return configPath + "/mindev";
+}
+
+QString SettingsManager::configFilePath()
+{
+    return configDirPath() + "/config.ini";
+}
+
+void SettingsManager::load()
+{
+    Q_UNUSED(m_settings);
+}
+
+void SettingsManager::save()
+{
+    m_settings->sync();
+}
+
+QString SettingsManager::fontFamily() const
+{
+    return m_settings->value("font/family", "Segoe UI").toString();
+}
+
+void SettingsManager::setFontFamily(const QString &family)
+{
+    m_settings->setValue("font/family", family);
+}
+
+int SettingsManager::fontSize() const
+{
+    return m_settings->value("font/size", 13).toInt();
+}
+
+void SettingsManager::setFontSize(int size)
+{
+    m_settings->setValue("font/size", size);
+}
+
+bool SettingsManager::sidebarVisible() const
+{
+    return m_settings->value("ui/sidebarVisible", true).toBool();
+}
+
+void SettingsManager::setSidebarVisible(bool visible)
+{
+    m_settings->setValue("ui/sidebarVisible", visible);
+}

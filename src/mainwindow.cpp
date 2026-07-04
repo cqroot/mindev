@@ -3,13 +3,17 @@
 
 #include <QAction>
 #include <QApplication>
+#include <QFont>
 #include <QListWidget>
 #include <QMenuBar>
 #include <QMessageBox>
+#include <QProcess>
 #include <QStackedWidget>
 #include <QSplitter>
 #include <QVBoxLayout>
 
+#include "settingsdialog.h"
+#include "settingsmanager.h"
 #include "tools/toolfactory.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -20,7 +24,9 @@ MainWindow::MainWindow(QWidget *parent)
     , m_contentStack(nullptr)
     , m_toggleSidebarAction(nullptr)
 {
+    SettingsManager::instance().load();
     setupUi();
+    applySettings();
 }
 
 MainWindow::~MainWindow()
@@ -48,6 +54,12 @@ void MainWindow::setupUi()
     m_toggleSidebarAction->setChecked(true);
     viewMenu->addAction(m_toggleSidebarAction);
     connect(m_toggleSidebarAction, &QAction::triggered, this, &MainWindow::onToggleSidebar);
+
+    QMenu *settingsMenu = menuBar->addMenu("Settings");
+
+    QAction *preferencesAction = new QAction("Preferences", this);
+    settingsMenu->addAction(preferencesAction);
+    connect(preferencesAction, &QAction::triggered, this, &MainWindow::onOpenSettings);
 
     QMenu *helpMenu = menuBar->addMenu("Help");
 
@@ -126,4 +138,25 @@ void MainWindow::onQuit()
 void MainWindow::onToggleSidebar()
 {
     m_sidebarWidget->setVisible(m_toggleSidebarAction->isChecked());
+}
+
+void MainWindow::onOpenSettings()
+{
+    SettingsDialog dialog(this);
+    if (dialog.exec() == QDialog::Accepted) {
+        applySettings();
+        QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+        qApp->quit();
+    }
+}
+
+void MainWindow::applySettings()
+{
+    auto &settings = SettingsManager::instance();
+
+    QFont font(settings.fontFamily(), settings.fontSize());
+    qApp->setFont(font);
+
+    m_sidebarWidget->setVisible(settings.sidebarVisible());
+    m_toggleSidebarAction->setChecked(settings.sidebarVisible());
 }

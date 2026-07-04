@@ -18,9 +18,11 @@ class MainWindow : public QMainWindow {
     void onAbout();
     void onQuit();
     void onToggleSidebar();
+    void onOpenSettings();
 
   private:
     void setupUi();
+    void applySettings();
 
     QWidget *m_centralWidget;
     QWidget *m_sidebarWidget;

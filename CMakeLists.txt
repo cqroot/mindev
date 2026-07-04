@@ -9,6 +9,10 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
 
 add_executable(${PROJECT_NAME}
     src/main.cpp
+    src/settingsmanager.cpp
+    src/settingsmanager.h
+    src/settingsdialog.cpp
+    src/settingsdialog.h
     src/stylemanager.cpp
     src/stylemanager.h
     src/mainwindow.cpp

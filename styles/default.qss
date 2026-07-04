@@ -73,11 +73,119 @@ QMessageBox QPushButton:pressed {
     background-color: #242424;
 }
 
+/* ===== Dialog ===== */
+QDialog {
+    background-color: #1a1a1a;
+}
+
+QDialog QGroupBox {
+    background-color: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 6px;
+    padding: 12px;
+    margin-top: 8px;
+    font-weight: 500;
+    color: #888888;
+}
+
+QDialog QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    left: 8px;
+    padding: 0 4px;
+    background-color: transparent;
+}
+
+QDialog QFormLayout QLabel {
+    color: #888888;
+}
+
+QDialog QSpinBox {
+    background-color: #0f0f0f;
+    border: 1px solid #2a2a2a;
+    border-radius: 4px;
+    padding: 4px 8px;
+    color: #e0e0e0;
+}
+
+QDialog QSpinBox:focus {
+    border-color: #404040;
+}
+
+QDialog QComboBox {
+    background-color: #0f0f0f;
+    border: 1px solid #2a2a2a;
+    border-radius: 4px;
+    padding: 4px 8px;
+    color: #e0e0e0;
+}
+
+QDialog QComboBox:focus {
+    border-color: #404040;
+}
+
+QDialog QComboBox::drop-down {
+    border: none;
+    width: 20px;
+}
+
+QDialog QComboBox::down-arrow {
+    image: none;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid #888888;
+    margin-right: 8px;
+}
+
+QDialog QComboBox QAbstractItemView {
+    background-color: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    color: #e0e0e0;
+    selection-background-color: #333333;
+}
+
+QDialog QCheckBox {
+    color: #e0e0e0;
+    spacing: 8px;
+}
+
+QDialog QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #3a3a3a;
+    border-radius: 3px;
+    background-color: #0f0f0f;
+}
+
+QDialog QCheckBox::indicator:checked {
+    background-color: #333333;
+    border-color: #444444;
+}
+
+QDialog QDialogButtonBox {
+    button-layout: 0;
+}
+
+QDialog QDialogButtonBox QPushButton {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+    border: 1px solid #3a3a3a;
+    border-radius: 4px;
+    padding: 6px 16px;
+    min-width: 80px;
+}
+
+QDialog QDialogButtonBox QPushButton:hover {
+    background-color: #333333;
+}
+
+QDialog QDialogButtonBox QPushButton:pressed {
+    background-color: #242424;
+}
+
 QWidget {
     background-color: #121212;
     color: #e0e0e0;
-    font-family: "Segoe UI", "SF Pro Display", -apple-system, sans-serif;
-    font-size: 13px;
 }
 
 /* ===== Sidebar ===== */
@@ -127,11 +235,6 @@ QLineEdit::placeholder {
     color: #555555;
 }
 
-/* ===== Label ===== */
-QLabel {
-    background-color: #1a1a1a;
-}
-
 /* ===== GroupBox ===== */
 QGroupBox {
     background-color: #1a1a1a;
@@ -142,6 +245,10 @@ QGroupBox {
     font-size: 14px;
     font-weight: 500;
     color: #888888;
+}
+
+QGroupBox QLabel {
+    background-color: #1a1a1a;
 }
 
 QGroupBox QFormLayout {
