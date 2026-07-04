@@ -8,6 +8,23 @@
 #include <QHBoxLayout>
 #include <QFormLayout>
 #include <QRegularExpressionValidator>
+#include <QtMath>
+
+static QString formatNumber(double value)
+{
+    if (value == 0) return "0";
+    if (qAbs(value) >= 1e20) {
+        return QString::number(value, 'e', 4);
+    }
+    int decimals = 4;
+    if (qAbs(value) >= 1) {
+        decimals = qMax(0, 15 - static_cast<int>(log10(qAbs(value))) - 1);
+    }
+    QString result = QString::number(value, 'f', decimals);
+    result.remove(QRegularExpression("0+$"));
+    result.remove(QRegularExpression("\\.$"));
+    return result;
+}
 
 StorageConverterTool::StorageConverterTool(QWidget *parent)
     : QWidget(parent)
@@ -201,7 +218,7 @@ void StorageConverterTool::updateResults(double bytes)
     m_updating = true;
 
     m_bytesInput->blockSignals(true);
-    m_bytesInput->setText(QString::number(bytes, 'g', 15));
+    m_bytesInput->setText(formatNumber(bytes));
     m_bytesInput->blockSignals(false);
 
     const double kb = 1000.0;
@@ -216,39 +233,39 @@ void StorageConverterTool::updateResults(double bytes)
     const double tib = gib * 1024.0;
 
     m_kbInput->blockSignals(true);
-    m_kbInput->setText(QString::number(bytes / kb, 'g', 15));
+    m_kbInput->setText(formatNumber(bytes / kb));
     m_kbInput->blockSignals(false);
 
     m_mbInput->blockSignals(true);
-    m_mbInput->setText(QString::number(bytes / mb, 'g', 15));
+    m_mbInput->setText(formatNumber(bytes / mb));
     m_mbInput->blockSignals(false);
 
     m_gbInput->blockSignals(true);
-    m_gbInput->setText(QString::number(bytes / gb, 'g', 15));
+    m_gbInput->setText(formatNumber(bytes / gb));
     m_gbInput->blockSignals(false);
 
     m_tbInput->blockSignals(true);
-    m_tbInput->setText(QString::number(bytes / tb, 'g', 15));
+    m_tbInput->setText(formatNumber(bytes / tb));
     m_tbInput->blockSignals(false);
 
     m_pbInput->blockSignals(true);
-    m_pbInput->setText(QString::number(bytes / pb, 'g', 15));
+    m_pbInput->setText(formatNumber(bytes / pb));
     m_pbInput->blockSignals(false);
 
     m_kibInput->blockSignals(true);
-    m_kibInput->setText(QString::number(bytes / kib, 'g', 15));
+    m_kibInput->setText(formatNumber(bytes / kib));
     m_kibInput->blockSignals(false);
 
     m_mibInput->blockSignals(true);
-    m_mibInput->setText(QString::number(bytes / mib, 'g', 15));
+    m_mibInput->setText(formatNumber(bytes / mib));
     m_mibInput->blockSignals(false);
 
     m_gibInput->blockSignals(true);
-    m_gibInput->setText(QString::number(bytes / gib, 'g', 15));
+    m_gibInput->setText(formatNumber(bytes / gib));
     m_gibInput->blockSignals(false);
 
     m_tibInput->blockSignals(true);
-    m_tibInput->setText(QString::number(bytes / tib, 'g', 15));
+    m_tibInput->setText(formatNumber(bytes / tib));
     m_tibInput->blockSignals(false);
 
     m_updating = false;
