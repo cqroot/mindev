@@ -24,6 +24,8 @@ add_executable(${PROJECT_NAME}
     src/tools/baseconvertertool.h
     src/tools/storageconvertertool.cpp
     src/tools/storageconvertertool.h
+    src/tools/subnetcalculatortool.cpp
+    src/tools/subnetcalculatortool.h
 )
 
 # Copy styles directory to build directory

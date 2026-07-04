@@ -1,6 +1,7 @@
 #include "toolfactory.h"
 #include "baseconvertertool.h"
 #include "storageconvertertool.h"
+#include "subnetcalculatortool.h"
 
 ToolFactory &ToolFactory::instance()
 {
@@ -17,6 +18,7 @@ void ToolFactory::ensureInitialized()
 
     registerTool<BaseConverterTool>();
     registerTool<StorageConverterTool>();
+    registerTool<SubnetCalculatorTool>();
 }
 
 QVector<ToolInterface *> ToolFactory::allTools()

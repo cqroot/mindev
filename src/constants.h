@@ -9,6 +9,7 @@ constexpr char AppTitle[] = "MinDev - Developer Toolbox";
 namespace Tools {
 constexpr char BaseConverterName[] = "Base Conversion";
 constexpr char StorageConverterName[] = "Storage Unit Conversion";
+constexpr char SubnetCalculatorName[] = "Subnet Calculator";
 } // namespace Tools
 
 namespace Styles {
