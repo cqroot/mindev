@@ -1,0 +1,148 @@
+/* MinDev - Modern Dark Stylesheet */
+
+/* ===== Splitter Handle ===== */
+QSplitter::handle {
+    background-color: #2a2a2a;
+}
+
+QSplitter::handle:hover {
+    background-color: #3a3a3a;
+}
+
+/* ===== Color Palette ===== */
+QMainWindow {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+QWidget {
+    background-color: #121212;
+    color: #e0e0e0;
+    font-family: "Segoe UI", "SF Pro Display", -apple-system, sans-serif;
+    font-size: 13px;
+}
+
+/* ===== Sidebar ===== */
+#sidebarWidget {
+    background-color: #1a1a1a;
+    border-right: 1px solid #2a2a2a;
+}
+
+QListWidget {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    padding: 4px 0;
+}
+
+QListWidget::item {
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin: 2px 4px;
+    color: #888888;
+}
+
+QListWidget::item:selected {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+QListWidget::item:hover:!selected {
+    background-color: #222222;
+}
+
+/* ===== LineEdit ===== */
+QLineEdit {
+    background-color: #0f0f0f;
+    border: 1px solid #2a2a2a;
+    border-radius: 4px;
+    padding: 8px 10px;
+    color: #e0e0e0;
+    selection-background-color: #404040;
+}
+
+QLineEdit:focus {
+    border-color: #404040;
+}
+
+QLineEdit::placeholder {
+    color: #555555;
+}
+
+/* ===== Label ===== */
+QLabel {
+    background-color: #1a1a1a;
+}
+
+/* ===== GroupBox ===== */
+QGroupBox {
+    background-color: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 6px;
+    padding: 16px;
+    margin-top: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #888888;
+}
+
+QGroupBox QFormLayout {
+    border-top: 1px solid #2a2a2a;
+    padding-top: 12px;
+}
+
+QGroupBox QFormLayout QLabel {
+    color: #666666;
+    min-width: 40px;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    left: 12px;
+    padding: 0 6px;
+    background-color: transparent;
+}
+
+/* ===== ScrollBar ===== */
+QScrollBar:vertical {
+    background-color: transparent;
+    width: 8px;
+    margin: 4px 0;
+}
+
+QScrollBar::handle:vertical {
+    background-color: #333333;
+    border-radius: 4px;
+    min-height: 30px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background-color: #444444;
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0;
+}
+
+QScrollBar:horizontal {
+    background-color: transparent;
+    height: 8px;
+    margin: 0 4px;
+}
+
+QScrollBar::handle:horizontal {
+    background-color: #333333;
+    border-radius: 4px;
+    min-width: 30px;
+}
+
+QScrollBar::handle:horizontal:hover {
+    background-color: #444444;
+}
+
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {
+    width: 0;
+}
