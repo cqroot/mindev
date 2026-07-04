@@ -70,3 +70,13 @@ void SettingsManager::setSidebarVisible(bool visible)
 {
     m_settings->setValue("ui/sidebarVisible", visible);
 }
+
+QString SettingsManager::theme() const
+{
+    return m_settings->value("ui/theme", "dark").toString();
+}
+
+void SettingsManager::setTheme(const QString &theme)
+{
+    m_settings->setValue("ui/theme", theme);
+}

@@ -22,6 +22,7 @@ private:
 
     QComboBox *m_fontFamilyCombo;
     QSpinBox *m_fontSizeSpin;
+    QComboBox *m_themeCombo;
     QCheckBox *m_sidebarCheckBox;
 };
 

@@ -21,7 +21,10 @@ public:
     bool sidebarVisible() const;
     void setSidebarVisible(bool visible);
 
-private:
+    QString theme() const;
+    void setTheme(const QString &theme);
+
+  private:
     SettingsManager();
 
     static QString configDirPath();

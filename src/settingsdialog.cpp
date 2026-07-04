@@ -1,9 +1,12 @@
 #include "settingsdialog.h"
 #include "settingsmanager.h"
+#include "constants.h"
+#include "stylemanager.h"
 
 #include <QCheckBox>
 #include <QComboBox>
 #include <QDialogButtonBox>
+#include <QDir>
 #include <QFontDatabase>
 #include <QFormLayout>
 #include <QGroupBox>
@@ -23,6 +26,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     auto &settings = SettingsManager::instance();
     m_fontFamilyCombo->setCurrentText(settings.fontFamily());
     m_fontSizeSpin->setValue(settings.fontSize());
+    m_themeCombo->setCurrentText(settings.theme());
     m_sidebarCheckBox->setChecked(settings.sidebarVisible());
 }
 
@@ -43,6 +47,16 @@ void SettingsDialog::setupUi()
     m_fontSizeSpin = new QSpinBox();
     m_fontSizeSpin->setRange(8, 24);
     appearanceLayout->addRow("Font Size:", m_fontSizeSpin);
+
+    m_themeCombo = new QComboBox();
+    m_themeCombo->addItem("default");
+    QStringList styleFiles = StyleManager::findAvailableStyles();
+    for (const QString &style : styleFiles) {
+        if (style != "default") {
+            m_themeCombo->addItem(style);
+        }
+    }
+    appearanceLayout->addRow("Theme:", m_themeCombo);
 
     appearanceGroup->setLayout(appearanceLayout);
     mainLayout->addWidget(appearanceGroup);
@@ -67,6 +81,7 @@ void SettingsDialog::onAccept()
     auto &settings = SettingsManager::instance();
     settings.setFontFamily(m_fontFamilyCombo->currentText());
     settings.setFontSize(m_fontSizeSpin->value());
+    settings.setTheme(m_themeCombo->currentText());
     settings.setSidebarVisible(m_sidebarCheckBox->isChecked());
     settings.save();
     accept();

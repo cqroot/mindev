@@ -3,6 +3,7 @@
 
 #include <QAction>
 #include <QApplication>
+#include <QFile>
 #include <QFont>
 #include <QListWidget>
 #include <QMenuBar>
@@ -14,6 +15,7 @@
 
 #include "settingsdialog.h"
 #include "settingsmanager.h"
+#include "stylemanager.h"
 #include "tools/toolfactory.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -156,6 +158,14 @@ void MainWindow::applySettings()
 
     QFont font(settings.fontFamily(), settings.fontSize());
     qApp->setFont(font);
+
+    QString themeFile = StyleManager::findStyleFile(settings.theme());
+    if (!themeFile.isEmpty()) {
+        QFile file(themeFile);
+        if (file.open(QFile::ReadOnly | QFile::Text)) {
+            qApp->setStyleSheet(QString::fromUtf8(file.readAll()));
+        }
+    }
 
     m_sidebarWidget->setVisible(settings.sidebarVisible());
     m_toggleSidebarAction->setChecked(settings.sidebarVisible());

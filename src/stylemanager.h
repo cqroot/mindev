@@ -6,7 +6,8 @@
 
 class StyleManager {
   public:
-    static QString findStyleFile();
+    static QString findStyleFile(const QString &theme = QString());
+    static QStringList findAvailableStyles();
     static QString getXdgConfigDir();
     static void applyStyle(QApplication &app);
 };
