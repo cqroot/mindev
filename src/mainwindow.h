@@ -15,13 +15,18 @@ class MainWindow : public QMainWindow {
 
   private slots:
     void onToolListClicked(int row);
+    void onAbout();
+    void onQuit();
+    void onToggleSidebar();
 
   private:
     void setupUi();
 
     QWidget *m_centralWidget;
+    QWidget *m_sidebarWidget;
     QListWidget *m_toolList;
     QStackedWidget *m_contentStack;
+    QAction *m_toggleSidebarAction;
 };
 
 #endif

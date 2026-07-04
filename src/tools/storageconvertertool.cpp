@@ -12,7 +12,9 @@
 
 static QString formatNumber(double value)
 {
-    if (value == 0) return "0";
+    if (value == 0) {
+        return "0";
+    }
     if (qAbs(value) >= 1e20) {
         return QString::number(value, 'e', 4);
     }

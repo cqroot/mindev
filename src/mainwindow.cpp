@@ -1,7 +1,11 @@
 #include "constants.h"
 #include "mainwindow.h"
 
+#include <QAction>
+#include <QApplication>
 #include <QListWidget>
+#include <QMenuBar>
+#include <QMessageBox>
 #include <QStackedWidget>
 #include <QSplitter>
 #include <QVBoxLayout>
@@ -11,8 +15,10 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , m_centralWidget(nullptr)
+    , m_sidebarWidget(nullptr)
     , m_toolList(nullptr)
     , m_contentStack(nullptr)
+    , m_toggleSidebarAction(nullptr)
 {
     setupUi();
 }
@@ -26,6 +32,35 @@ void MainWindow::setupUi()
     resize(700, 500);
     setWindowTitle(Constants::AppTitle);
 
+    QMenuBar *menuBar = new QMenuBar(this);
+    setMenuBar(menuBar);
+
+    QMenu *fileMenu = menuBar->addMenu("File");
+
+    QAction *quitAction = new QAction("Quit", this);
+    fileMenu->addAction(quitAction);
+    connect(quitAction, &QAction::triggered, this, &MainWindow::onQuit);
+
+    QMenu *viewMenu = menuBar->addMenu("View");
+
+    m_toggleSidebarAction = new QAction("Sidebar", this);
+    m_toggleSidebarAction->setCheckable(true);
+    m_toggleSidebarAction->setChecked(true);
+    viewMenu->addAction(m_toggleSidebarAction);
+    connect(m_toggleSidebarAction, &QAction::triggered, this, &MainWindow::onToggleSidebar);
+
+    QMenu *helpMenu = menuBar->addMenu("Help");
+
+    QAction *aboutQtAction = new QAction("About Qt", this);
+    helpMenu->addAction(aboutQtAction);
+    connect(aboutQtAction, &QAction::triggered, this, [this] { QMessageBox::aboutQt(this); });
+
+    helpMenu->addSeparator();
+
+    QAction *aboutAction = new QAction("About", this);
+    helpMenu->addAction(aboutAction);
+    connect(aboutAction, &QAction::triggered, this, &MainWindow::onAbout);
+
     m_centralWidget = new QWidget(this);
     setCentralWidget(m_centralWidget);
 
@@ -33,8 +68,8 @@ void MainWindow::setupUi()
     QHBoxLayout *mainLayout = new QHBoxLayout(m_centralWidget);
     mainLayout->addWidget(splitter);
 
-    QWidget *sidebarWidget = new QWidget();
-    QVBoxLayout *sidebarLayout = new QVBoxLayout(sidebarWidget);
+    m_sidebarWidget = new QWidget();
+    QVBoxLayout *sidebarLayout = new QVBoxLayout(m_sidebarWidget);
     sidebarLayout->setContentsMargins(0, 0, 0, 0);
 
     m_toolList = new QListWidget();
@@ -42,7 +77,7 @@ void MainWindow::setupUi()
     m_toolList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     sidebarLayout->addWidget(m_toolList);
 
-    splitter->addWidget(sidebarWidget);
+    splitter->addWidget(m_sidebarWidget);
 
     m_contentStack = new QStackedWidget();
     splitter->addWidget(m_contentStack);
@@ -69,4 +104,26 @@ void MainWindow::onToolListClicked(int row)
     if (row >= 0) {
         m_contentStack->setCurrentIndex(row);
     }
+}
+
+void MainWindow::onAbout()
+{
+    QMessageBox msgBox(this);
+    msgBox.setWindowTitle(QString("About %1").arg(Constants::AppTitle));
+    msgBox.setText(QString("<h3>%1</h3>"
+                           "<p>A developer toolbox with useful tools.</p>"
+                           "<p>Version 0.0.1</p>")
+                       .arg(Constants::AppTitle));
+    msgBox.setStyleSheet(qApp->styleSheet());
+    msgBox.exec();
+}
+
+void MainWindow::onQuit()
+{
+    qApp->quit();
+}
+
+void MainWindow::onToggleSidebar()
+{
+    m_sidebarWidget->setVisible(m_toggleSidebarAction->isChecked());
 }

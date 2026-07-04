@@ -20,4 +20,6 @@ clean:
 
 .PHONY: format
 format:
-	find src -name "*.cpp" -o -name "*.h" | xargs clang-format --verbose -i -style=file
+	@echo "Running clang-format..."
+	@find src -name "*.cpp" -o -name "*.h" | xargs clang-format --verbose -i -style=file
+	@echo
