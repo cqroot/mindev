@@ -156,7 +156,7 @@ void MainWindow::applySettings()
 {
     auto &settings = SettingsManager::instance();
 
-    QFont font(settings.fontFamily(), settings.fontSize());
+    QFont font(settings.fontFamily());
     qApp->setFont(font);
 
     QString themeFile = StyleManager::findStyleFile(settings.theme());

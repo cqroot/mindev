@@ -13,7 +13,6 @@
 #include <QHBoxLayout>
 #include <QHeaderView>
 #include <QPushButton>
-#include <QSpinBox>
 #include <QVBoxLayout>
 
 SettingsDialog::SettingsDialog(QWidget *parent)
@@ -25,7 +24,6 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 
     auto &settings = SettingsManager::instance();
     m_fontFamilyCombo->setCurrentText(settings.fontFamily());
-    m_fontSizeSpin->setValue(settings.fontSize());
     m_themeCombo->setCurrentText(settings.theme());
     m_sidebarCheckBox->setChecked(settings.sidebarVisible());
 }
@@ -43,10 +41,6 @@ void SettingsDialog::setupUi()
         m_fontFamilyCombo->addItem(family);
     }
     appearanceLayout->addRow("Font:", m_fontFamilyCombo);
-
-    m_fontSizeSpin = new QSpinBox();
-    m_fontSizeSpin->setRange(8, 24);
-    appearanceLayout->addRow("Font Size:", m_fontSizeSpin);
 
     m_themeCombo = new QComboBox();
     m_themeCombo->addItem("default");
@@ -80,7 +74,6 @@ void SettingsDialog::onAccept()
 {
     auto &settings = SettingsManager::instance();
     settings.setFontFamily(m_fontFamilyCombo->currentText());
-    settings.setFontSize(m_fontSizeSpin->value());
     settings.setTheme(m_themeCombo->currentText());
     settings.setSidebarVisible(m_sidebarCheckBox->isChecked());
     settings.save();

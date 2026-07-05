@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 
     SettingsManager::instance().load();
 
-    QFont font(SettingsManager::instance().fontFamily(), SettingsManager::instance().fontSize());
+    QFont font(SettingsManager::instance().fontFamily());
     a.setFont(font);
 
     StyleManager::applyStyle(a);

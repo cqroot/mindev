@@ -4,7 +4,6 @@
 #include <QDialog>
 
 class QComboBox;
-class QSpinBox;
 class QCheckBox;
 
 class SettingsDialog : public QDialog
@@ -21,7 +20,6 @@ private:
     void setupUi();
 
     QComboBox *m_fontFamilyCombo;
-    QSpinBox *m_fontSizeSpin;
     QComboBox *m_themeCombo;
     QCheckBox *m_sidebarCheckBox;
 };

@@ -15,9 +15,6 @@ public:
     QString fontFamily() const;
     void setFontFamily(const QString &family);
 
-    int fontSize() const;
-    void setFontSize(int size);
-
     bool sidebarVisible() const;
     void setSidebarVisible(bool visible);
 

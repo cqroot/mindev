@@ -43,22 +43,16 @@ void SettingsManager::save()
 
 QString SettingsManager::fontFamily() const
 {
+#ifdef Q_OS_WIN
+    return m_settings->value("font/family", "Consolas").toString();
+#else
     return m_settings->value("font/family", "Segoe UI").toString();
+#endif
 }
 
 void SettingsManager::setFontFamily(const QString &family)
 {
     m_settings->setValue("font/family", family);
-}
-
-int SettingsManager::fontSize() const
-{
-    return m_settings->value("font/size", 13).toInt();
-}
-
-void SettingsManager::setFontSize(int size)
-{
-    m_settings->setValue("font/size", size);
 }
 
 bool SettingsManager::sidebarVisible() const
