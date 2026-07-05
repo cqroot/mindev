@@ -126,7 +126,7 @@ void MainWindow::onAbout()
     msgBox.setWindowTitle(QString("About %1").arg(Constants::AppTitle));
     msgBox.setText(QString("<h3>%1</h3>"
                            "<p>A developer toolbox with useful tools.</p>"
-                           "<p>Version 0.0.1</p>")
+                           "<p>Version " APP_VERSION "</p>")
                        .arg(Constants::AppTitle));
     msgBox.setStyleSheet(qApp->styleSheet());
     msgBox.exec();

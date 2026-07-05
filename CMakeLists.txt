@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.16)
 project(mindev LANGUAGES CXX)
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+include(GetGitRevision)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
@@ -36,3 +39,5 @@ endif()
 file(COPY styles DESTINATION ${CMAKE_BINARY_DIR})
 
 target_link_libraries(${PROJECT_NAME} Qt6::Core Qt6::Gui Qt6::Widgets)
+
+target_compile_definitions(${PROJECT_NAME} PRIVATE APP_VERSION="${APP_VERSION}")
