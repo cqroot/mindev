@@ -28,6 +28,10 @@ add_executable(${PROJECT_NAME}
     src/tools/subnetcalculatortool.h
 )
 
+if(WIN32)
+    set_property(TARGET ${PROJECT_NAME} PROPERTY WIN32_EXECUTABLE TRUE)
+endif()
+
 # Copy styles directory to build directory
 file(COPY styles DESTINATION ${CMAKE_BINARY_DIR})
 

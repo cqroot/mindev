@@ -5,7 +5,7 @@ build:
 	@mkdir -p $(BUILD_DIR)
 	@echo "Building project in $(BUILD_DIR)..."
 	cmake -S '$(CURDIR)' -B '$(BUILD_DIR)' -G Ninja
-	ninja -C '$(BUILD_DIR)' -j "$$(nproc)"
+	cmake --build '$(BUILD_DIR)' --parallel
 	@echo
 
 .PHONY: run

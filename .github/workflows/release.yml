@@ -1,0 +1,138 @@
+name: 📣 Build release of MinDev
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+env:
+  APP_NAME: mindev
+  QT_VERSION: 6.10.1
+
+defaults:
+  run:
+    working-directory: .
+
+jobs:
+  create_release:
+    name: "🗃️️ Prepare release"
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+      release_id: ${{ steps.create_release.outputs.id }}
+    steps:
+      - name: "🧰 Checkout"
+        uses: actions/checkout@v7
+
+      - name: "⚙️ Set Env"
+        run: |
+          export VERSION=$(git describe --tags --abbrev=0 | sed 's/^v//')
+          export TAG=$(git describe --tags --abbrev=0)
+          if [ -z "$VERSION" ]; then
+            export VERSION="0.0.0"
+            export TAG="v0.0.0"
+          fi
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+          echo "TAG=${TAG}" >> $GITHUB_ENV
+
+          PREV_TAG=$(git describe --tags --abbrev=0 --exclude='*' 2>/dev/null | xargs -I {} git rev-list --ancestry-path {}..HEAD --count 2>/dev/null && git describe --tags --abbrev=0 HEAD~1 2>/dev/null) || true
+          if [ -z "$PREV_TAG" ]; then
+            PREV_TAG=$(git rev-list --max-parents=0 HEAD 2>/dev/null | head -1)
+          fi
+          echo "PREV_TAG=${PREV_TAG}" >> $GITHUB_ENV
+
+      - name: "🖨 Print Env"
+        run: |
+          echo "VERSION=${VERSION}"
+          echo "TAG=${TAG}"
+          echo "PREV_TAG=${PREV_TAG}"
+
+      - name: "📝 Generate Release Notes"
+        id: release_notes
+        run: |
+          CHANGELOG=$(git log --oneline --format="- %s" ${{ env.PREV_TAG }}..${{ env.TAG }} 2>/dev/null | grep -E "^(feat|fix)" || true)
+          if [ -z "$CHANGELOG" ]; then
+            CHANGELOG="No significant changes since the last release."
+          fi
+          echo "CHANGELOG<<EOF" >> $GITHUB_ENV
+          echo "$CHANGELOG" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: "📤 Create release"
+        id: create_release
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ env.TAG }}
+          name: Release v${{ env.VERSION }}
+          body: |
+            ## MinDev - Developer Toolbox v${{ env.VERSION }}
+
+            ### Changes
+            ${{ env.CHANGELOG }}
+          draft: false
+          prerelease: false
+          generate_release_notes: false
+
+  build-windows:
+    name: "🧊 Windows"
+    needs: create_release
+    runs-on: windows-latest
+    env:
+      APP_DIR: .\build\Release
+      ZIP_NAME: mindev-win-x64.zip
+    steps:
+      - name: "🧰 Checkout"
+        uses: actions/checkout@v7
+
+      - name: "⚙️ Install Qt"
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: ${{env.QT_VERSION}}
+          cache: true
+
+      - name: "⚙️ Set Env"
+        shell: bash
+        run: |
+          export VERSION=$(git describe --tags --abbrev=0 | sed 's/^v//')
+          if [ -z "$VERSION" ]; then
+              export VERSION="0.0.0"
+          fi
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+
+      - name: "🖨 Print Env"
+        shell: bash
+        run: |
+          echo "VERSION=${VERSION}"
+
+      - name: "🚧 Compile application"
+        shell: bash
+        run: |
+          mkdir -p build
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+          cmake --build build --parallel --config Release
+
+      - name: "📦 Deploy Qt Dependencies"
+        run: |
+          windeployqt --release --compiler-runtime "${{ env.APP_DIR }}\${{ env.APP_NAME }}.exe"
+        shell: cmd
+
+      - name: "📦 Zip and Upload Artifact"
+        run: |
+          Compress-Archive -Path "${{ env.APP_DIR }}\*" -DestinationPath ${{ env.ZIP_NAME }} -Force
+          echo "zip_name=${{ env.ZIP_NAME }}" >> $env:GITHUB_ENV
+
+      - name: "📤 Upload Artifact"
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ env.ZIP_NAME }}
+          path: ${{ env.ZIP_NAME }}
+
+      - name: "📤 Release ZIP"
+        uses: softprops/action-gh-release@v3
+        with:
+          files: ${{ env.ZIP_NAME }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
