@@ -121,6 +121,12 @@ jobs:
           windeployqt --release --compiler-runtime "${{ env.APP_DIR }}\${{ env.APP_NAME }}.exe"
         shell: cmd
 
+      - name: "📦 Copy icons"
+        shell: bash
+        run: |
+          mkdir -p "${{ env.APP_DIR }}/icons"
+          cp build/icons/app.png "${{ env.APP_DIR }}/icons/"
+
       - name: "📦 Zip and Upload Artifact"
         run: |
           Compress-Archive -Path "${{ env.APP_DIR }}\*" -DestinationPath ${{ env.ZIP_NAME }} -Force

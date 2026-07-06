@@ -46,7 +46,14 @@ target_link_libraries(${PROJECT_NAME} Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Svg)
 target_compile_definitions(${PROJECT_NAME} PRIVATE APP_VERSION="${APP_VERSION}")
 
 # Convert SVG to PNG after build
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND bash -c "rsvg-convert -w 64 -h 64 '${CMAKE_BINARY_DIR}/icons/app.svg' -o '${CMAKE_BINARY_DIR}/icons/app.png'"
-    COMMENT "Converting SVG icon to PNG"
-)
+if(WIN32)
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND cmd /c "rsvg-convert -w 64 -h 64 \"${CMAKE_BINARY_DIR}\\icons\\app.svg\" -o \"${CMAKE_BINARY_DIR}\\icons\\app.png\""
+        COMMENT "Converting SVG icon to PNG"
+    )
+else()
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND bash -c "rsvg-convert -w 64 -h 64 '${CMAKE_BINARY_DIR}/icons/app.svg' -o '${CMAKE_BINARY_DIR}/icons/app.png'"
+        COMMENT "Converting SVG icon to PNG"
+    )
+endif()
