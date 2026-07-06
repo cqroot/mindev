@@ -26,9 +26,12 @@ jobs:
     steps:
       - name: "🧰 Checkout"
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: "⚙️ Set Env"
         run: |
+          git fetch --tags origin
           TAG=$(git describe --tags --abbrev=0)
           VERSION=$(echo "$TAG" | sed 's/^v//')
           if [ -z "$VERSION" ]; then
@@ -38,8 +41,7 @@ jobs:
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
           echo "TAG=${TAG}" >> $GITHUB_ENV
 
-          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null) || \
-                     PREV_TAG=$(git rev-list --max-parents=0 HEAD 2>/dev/null | head -1) || true
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null) || true
           echo "PREV_TAG=${PREV_TAG}" >> $GITHUB_ENV
 
       - name: "🖨 Print Env"
@@ -51,15 +53,22 @@ jobs:
       - name: "📝 Generate Release Notes"
         id: release_notes
         run: |
+          echo "PREV_TAG is: '${{ env.PREV_TAG }}'"
+          echo "TAG is: '${{ env.TAG }}'"
           if [ -n "${{ env.PREV_TAG }}" ]; then
-              CHANGELOG=$(git log --oneline --format="- %s" ${{ env.PREV_TAG }}..${{ env.TAG }} 2>/dev/null | grep -E "^(feat|fix)" || true)
+              echo "Generating changelog between ${{ env.PREV_TAG }} and ${{ env.TAG }}"
+              CHANGELOG=$(git log --oneline --format="%s" ${{ env.PREV_TAG }}..${{ env.TAG }} 2>/dev/null | grep -E "^(feat|fix)" || true)
+              echo "Raw changelog: $CHANGELOG"
           else
-              CHANGELOG=$(git log --oneline --format="- %s" -n 50 2>/dev/null | grep -E "^(feat|fix)" || true)
+              echo "No PREV_TAG, using last 50 commits"
+              CHANGELOG=$(git log --oneline --format="%s" -n 50 2>/dev/null | grep -E "^(feat|fix)" || true)
+              echo "Raw changelog: $CHANGELOG"
           fi
           if [ -z "$CHANGELOG" ]; then
               CHANGELOG="No significant changes since the last release."
           fi
-          echo "$CHANGELOG" > release_notes.txt
+          echo "$CHANGELOG" | sed 's/^/- /' > release_notes.txt
+          cat release_notes.txt
 
       - name: "📤 Create release"
         id: create_release
@@ -77,7 +86,7 @@ jobs:
     needs: create_release
     runs-on: windows-latest
     env:
-      APP_DIR: .\build\Release
+      APP_DIR: ./build/Release
       ZIP_NAME: mindev-win-x64.zip
     steps:
       - name: "🧰 Checkout"
