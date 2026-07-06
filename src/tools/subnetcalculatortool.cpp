@@ -24,8 +24,7 @@ SubnetCalculatorTool::SubnetCalculatorTool(QWidget *parent)
     , m_usableHostsLabel(nullptr)
     , m_ipClassLabel(nullptr)
     , m_cidrLabel(nullptr)
-    , m_binaryLabel(nullptr)
-{
+    , m_binaryLabel(nullptr) {
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
 
     QVBoxLayout *wrapperLayout = new QVBoxLayout(this);
@@ -104,22 +103,18 @@ SubnetCalculatorTool::SubnetCalculatorTool(QWidget *parent)
     connect(m_input, &QLineEdit::textChanged, this, &SubnetCalculatorTool::onInputChanged);
 }
 
-SubnetCalculatorTool::~SubnetCalculatorTool()
-{
+SubnetCalculatorTool::~SubnetCalculatorTool() {
 }
 
-QString SubnetCalculatorTool::name() const
-{
+QString SubnetCalculatorTool::name() const {
     return Constants::Tools::SubnetCalculatorName;
 }
 
-QWidget *SubnetCalculatorTool::widget()
-{
+QWidget *SubnetCalculatorTool::widget() {
     return this;
 }
 
-void SubnetCalculatorTool::onInputChanged(const QString &text)
-{
+void SubnetCalculatorTool::onInputChanged(const QString &text) {
     if (text.isEmpty()) {
         m_cidrLabel->setText("-");
         m_networkLabel->setText("-");
@@ -137,8 +132,7 @@ void SubnetCalculatorTool::onInputChanged(const QString &text)
     calculate(text);
 }
 
-void SubnetCalculatorTool::calculate(const QString &input)
-{
+void SubnetCalculatorTool::calculate(const QString &input) {
     QStringList parts = input.split("/");
     if (parts.size() != 2) {
         return;
@@ -192,8 +186,7 @@ void SubnetCalculatorTool::calculate(const QString &input)
     m_binaryLabel->setText(binary);
 }
 
-QString SubnetCalculatorTool::ipToString(quint32 ip)
-{
+QString SubnetCalculatorTool::ipToString(quint32 ip) {
     return QString("%1.%2.%3.%4")
         .arg((ip >> 24) & 0xFF)
         .arg((ip >> 16) & 0xFF)
@@ -201,8 +194,7 @@ QString SubnetCalculatorTool::ipToString(quint32 ip)
         .arg(ip & 0xFF);
 }
 
-quint32 SubnetCalculatorTool::ipToUint(const QString &ip)
-{
+quint32 SubnetCalculatorTool::ipToUint(const QString &ip) {
     QStringList octets = ip.split(".");
     if (octets.size() != 4) {
         return 0;

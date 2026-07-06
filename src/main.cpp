@@ -4,9 +4,9 @@
 #include "stylemanager.h"
 
 #include <QApplication>
+#include <QPixmap>
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
     a.setApplicationName(Constants::AppName);
     a.setOrganizationName(Constants::AppName);
@@ -17,6 +17,11 @@ int main(int argc, char *argv[])
     a.setFont(font);
 
     StyleManager::applyStyle(a);
+
+    QPixmap pixmap;
+    if (pixmap.load("icons/app.png")) {
+        a.setWindowIcon(QIcon(pixmap));
+    }
 
     MainWindow w;
     w.show();

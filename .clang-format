@@ -7,7 +7,7 @@ UseTab: Never
 
 BraceWrapping:
   AfterClass: false
-  AfterControlStatement: false
+  AfterControlStatement: true
   AfterEnum: false
   AfterFunction: true
   AfterNamespace: false
@@ -17,7 +17,7 @@ BraceWrapping:
   BeforeCatch: false
   BeforeElse: false
 
-BreakBeforeBraces: Stroustrup
+BreakBeforeBraces: Attach
 
 IndentCaseLabels: false
 BreakConstructorInitializers: BeforeComma

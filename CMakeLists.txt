@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Svg)
 
 add_executable(${PROJECT_NAME}
     src/main.cpp
@@ -38,6 +38,15 @@ endif()
 # Copy styles directory to build directory
 file(COPY styles DESTINATION ${CMAKE_BINARY_DIR})
 
-target_link_libraries(${PROJECT_NAME} Qt6::Core Qt6::Gui Qt6::Widgets)
+# Copy icons to build directory
+file(COPY icons DESTINATION ${CMAKE_BINARY_DIR})
+
+target_link_libraries(${PROJECT_NAME} Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Svg)
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE APP_VERSION="${APP_VERSION}")
+
+# Convert SVG to PNG after build
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND bash -c "rsvg-convert -w 64 -h 64 '${CMAKE_BINARY_DIR}/icons/app.svg' -o '${CMAKE_BINARY_DIR}/icons/app.png'"
+    COMMENT "Converting SVG icon to PNG"
+)

@@ -25,8 +25,7 @@ class ToolFactory {
 };
 
 template<typename T>
-T *ToolFactory::registerTool()
-{
+T *ToolFactory::registerTool() {
     ensureInitialized();
     T *tool = new T();
     m_tools.append(tool);

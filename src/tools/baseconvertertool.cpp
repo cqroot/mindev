@@ -15,8 +15,7 @@ BaseConverterTool::BaseConverterTool(QWidget *parent)
     , m_octalInput(nullptr)
     , m_decimalInput(nullptr)
     , m_hexInput(nullptr)
-    , m_updating(false)
-{
+    , m_updating(false) {
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
 
     QVBoxLayout *wrapperLayout = new QVBoxLayout(this);
@@ -60,22 +59,18 @@ BaseConverterTool::BaseConverterTool(QWidget *parent)
     connect(m_hexInput, &QLineEdit::textChanged, this, &BaseConverterTool::onHexadecimalTextChanged);
 }
 
-BaseConverterTool::~BaseConverterTool()
-{
+BaseConverterTool::~BaseConverterTool() {
 }
 
-QString BaseConverterTool::name() const
-{
+QString BaseConverterTool::name() const {
     return Constants::Tools::BaseConverterName;
 }
 
-QWidget *BaseConverterTool::widget()
-{
+QWidget *BaseConverterTool::widget() {
     return this;
 }
 
-void BaseConverterTool::onBinaryTextChanged(const QString &text)
-{
+void BaseConverterTool::onBinaryTextChanged(const QString &text) {
     if (m_updating) {
         return;
     }
@@ -94,8 +89,7 @@ void BaseConverterTool::onBinaryTextChanged(const QString &text)
     }
 }
 
-void BaseConverterTool::onOctalTextChanged(const QString &text)
-{
+void BaseConverterTool::onOctalTextChanged(const QString &text) {
     if (m_updating) {
         return;
     }
@@ -114,8 +108,7 @@ void BaseConverterTool::onOctalTextChanged(const QString &text)
     }
 }
 
-void BaseConverterTool::onDecimalTextChanged(const QString &text)
-{
+void BaseConverterTool::onDecimalTextChanged(const QString &text) {
     if (m_updating) {
         return;
     }
@@ -134,8 +127,7 @@ void BaseConverterTool::onDecimalTextChanged(const QString &text)
     }
 }
 
-void BaseConverterTool::onHexadecimalTextChanged(const QString &text)
-{
+void BaseConverterTool::onHexadecimalTextChanged(const QString &text) {
     if (m_updating) {
         return;
     }
@@ -165,8 +157,7 @@ void BaseConverterTool::onHexadecimalTextChanged(const QString &text)
     }
 }
 
-void BaseConverterTool::updateResults(qlonglong value)
-{
+void BaseConverterTool::updateResults(qlonglong value) {
     m_updating = true;
     m_binaryInput->setText(QString::number(value, 2));
     m_octalInput->setText(QString::number(value, 8));

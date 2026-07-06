@@ -10,8 +10,7 @@
 #include <QRegularExpressionValidator>
 #include <QtMath>
 
-static QString formatNumber(double value)
-{
+static QString formatNumber(double value) {
     if (value == 0) {
         return "0";
     }
@@ -40,8 +39,7 @@ StorageConverterTool::StorageConverterTool(QWidget *parent)
     , m_mibInput(nullptr)
     , m_gibInput(nullptr)
     , m_tibInput(nullptr)
-    , m_updating(false)
-{
+    , m_updating(false) {
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
 
     QVBoxLayout *wrapperLayout = new QVBoxLayout(this);
@@ -124,22 +122,18 @@ StorageConverterTool::StorageConverterTool(QWidget *parent)
     connect(m_tibInput, &QLineEdit::textChanged, this, &StorageConverterTool::onTiBChanged);
 }
 
-StorageConverterTool::~StorageConverterTool()
-{
+StorageConverterTool::~StorageConverterTool() {
 }
 
-QString StorageConverterTool::name() const
-{
+QString StorageConverterTool::name() const {
     return Constants::Tools::StorageConverterName;
 }
 
-QWidget *StorageConverterTool::widget()
-{
+QWidget *StorageConverterTool::widget() {
     return this;
 }
 
-void StorageConverterTool::onBytesChanged(const QString &text)
-{
+void StorageConverterTool::onBytesChanged(const QString &text) {
     if (m_updating) {
         return;
     }
@@ -154,53 +148,43 @@ void StorageConverterTool::onBytesChanged(const QString &text)
     }
 }
 
-void StorageConverterTool::onKBChanged(const QString &text)
-{
+void StorageConverterTool::onKBChanged(const QString &text) {
     convertFromUnit(text, 1000.0);
 }
 
-void StorageConverterTool::onMBChanged(const QString &text)
-{
+void StorageConverterTool::onMBChanged(const QString &text) {
     convertFromUnit(text, 1000.0 * 1000.0);
 }
 
-void StorageConverterTool::onGBChanged(const QString &text)
-{
+void StorageConverterTool::onGBChanged(const QString &text) {
     convertFromUnit(text, 1000.0 * 1000.0 * 1000.0);
 }
 
-void StorageConverterTool::onTBChanged(const QString &text)
-{
+void StorageConverterTool::onTBChanged(const QString &text) {
     convertFromUnit(text, 1000.0 * 1000.0 * 1000.0 * 1000.0);
 }
 
-void StorageConverterTool::onPBChanged(const QString &text)
-{
+void StorageConverterTool::onPBChanged(const QString &text) {
     convertFromUnit(text, 1000.0 * 1000.0 * 1000.0 * 1000.0 * 1000.0);
 }
 
-void StorageConverterTool::onKiBChanged(const QString &text)
-{
+void StorageConverterTool::onKiBChanged(const QString &text) {
     convertFromUnit(text, 1024.0);
 }
 
-void StorageConverterTool::onMiBChanged(const QString &text)
-{
+void StorageConverterTool::onMiBChanged(const QString &text) {
     convertFromUnit(text, 1024.0 * 1024.0);
 }
 
-void StorageConverterTool::onGiBChanged(const QString &text)
-{
+void StorageConverterTool::onGiBChanged(const QString &text) {
     convertFromUnit(text, 1024.0 * 1024.0 * 1024.0);
 }
 
-void StorageConverterTool::onTiBChanged(const QString &text)
-{
+void StorageConverterTool::onTiBChanged(const QString &text) {
     convertFromUnit(text, 1024.0 * 1024.0 * 1024.0 * 1024.0);
 }
 
-void StorageConverterTool::convertFromUnit(const QString &text, double multiplier)
-{
+void StorageConverterTool::convertFromUnit(const QString &text, double multiplier) {
     if (m_updating) {
         return;
     }
@@ -215,8 +199,7 @@ void StorageConverterTool::convertFromUnit(const QString &text, double multiplie
     }
 }
 
-void StorageConverterTool::updateResults(double bytes)
-{
+void StorageConverterTool::updateResults(double bytes) {
     m_updating = true;
 
     m_bytesInput->blockSignals(true);

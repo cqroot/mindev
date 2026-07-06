@@ -4,9 +4,8 @@
 #include <QFont>
 #include <QSettings>
 
-class SettingsManager
-{
-public:
+class SettingsManager {
+  public:
     static SettingsManager &instance();
 
     void load();
@@ -17,6 +16,9 @@ public:
 
     bool sidebarVisible() const;
     void setSidebarVisible(bool visible);
+
+    bool trayIconEnabled() const;
+    void setTrayIconEnabled(bool enabled);
 
     QString theme() const;
     void setTheme(const QString &theme);

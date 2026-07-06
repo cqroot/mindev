@@ -6,22 +6,22 @@
 class QComboBox;
 class QCheckBox;
 
-class SettingsDialog : public QDialog
-{
+class SettingsDialog : public QDialog {
     Q_OBJECT
 
-public:
+  public:
     explicit SettingsDialog(QWidget *parent = nullptr);
 
-private slots:
+  private slots:
     void onAccept();
 
-private:
+  private:
     void setupUi();
 
     QComboBox *m_fontFamilyCombo;
     QComboBox *m_themeCombo;
     QCheckBox *m_sidebarCheckBox;
+    QCheckBox *m_trayIconCheckBox;
 };
 
 #endif

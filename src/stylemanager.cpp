@@ -6,8 +6,7 @@
 #include <QFile>
 #include <QStandardPaths>
 
-QString StyleManager::getXdgConfigDir()
-{
+QString StyleManager::getXdgConfigDir() {
     QStringList configDirs = QStandardPaths::standardLocations(QStandardPaths::GenericConfigLocation);
     for (const QString &dir : configDirs) {
         QDir d(dir);
@@ -18,8 +17,7 @@ QString StyleManager::getXdgConfigDir()
     return QString();
 }
 
-QStringList StyleManager::findAvailableStyles()
-{
+QStringList StyleManager::findAvailableStyles() {
     QStringList styles;
     QStringList searchPaths;
     QString appPath = QCoreApplication::applicationDirPath();
@@ -44,8 +42,7 @@ QStringList StyleManager::findAvailableStyles()
     return styles;
 }
 
-QString StyleManager::findStyleFile(const QString &theme)
-{
+QString StyleManager::findStyleFile(const QString &theme) {
     if (theme.isEmpty()) {
         return QString();
     }
@@ -70,8 +67,7 @@ QString StyleManager::findStyleFile(const QString &theme)
     return QString();
 }
 
-void StyleManager::applyStyle(QApplication &app)
-{
+void StyleManager::applyStyle(QApplication &app) {
     QString styleFile = findStyleFile();
     if (styleFile.isEmpty()) {
         return;

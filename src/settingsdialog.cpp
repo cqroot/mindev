@@ -16,8 +16,7 @@
 #include <QVBoxLayout>
 
 SettingsDialog::SettingsDialog(QWidget *parent)
-    : QDialog(parent)
-{
+    : QDialog(parent) {
     setWindowTitle("Settings");
     setMinimumWidth(400);
     setupUi();
@@ -26,10 +25,10 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     m_fontFamilyCombo->setCurrentText(settings.fontFamily());
     m_themeCombo->setCurrentText(settings.theme());
     m_sidebarCheckBox->setChecked(settings.sidebarVisible());
+    m_trayIconCheckBox->setChecked(settings.trayIconEnabled());
 }
 
-void SettingsDialog::setupUi()
-{
+void SettingsDialog::setupUi() {
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
     QGroupBox *appearanceGroup = new QGroupBox("Appearance");
@@ -61,6 +60,9 @@ void SettingsDialog::setupUi()
     m_sidebarCheckBox = new QCheckBox("Show sidebar by default");
     uiLayout->addRow(m_sidebarCheckBox);
 
+    m_trayIconCheckBox = new QCheckBox("Enable system tray icon");
+    uiLayout->addRow(m_trayIconCheckBox);
+
     uiGroup->setLayout(uiLayout);
     mainLayout->addWidget(uiGroup);
 
@@ -70,12 +72,12 @@ void SettingsDialog::setupUi()
     mainLayout->addWidget(buttonBox);
 }
 
-void SettingsDialog::onAccept()
-{
+void SettingsDialog::onAccept() {
     auto &settings = SettingsManager::instance();
     settings.setFontFamily(m_fontFamilyCombo->currentText());
     settings.setTheme(m_themeCombo->currentText());
     settings.setSidebarVisible(m_sidebarCheckBox->isChecked());
+    settings.setTrayIconEnabled(m_trayIconCheckBox->isChecked());
     settings.save();
     accept();
 }

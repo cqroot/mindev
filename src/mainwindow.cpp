@@ -3,14 +3,18 @@
 
 #include <QAction>
 #include <QApplication>
+#include <QCloseEvent>
+#include <QCoreApplication>
 #include <QFile>
 #include <QFont>
 #include <QListWidget>
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QProcess>
+#include <QPixmap>
 #include <QStackedWidget>
 #include <QSplitter>
+#include <QSystemTrayIcon>
 #include <QVBoxLayout>
 
 #include "settingsdialog.h"
@@ -25,18 +29,16 @@ MainWindow::MainWindow(QWidget *parent)
     , m_toolList(nullptr)
     , m_contentStack(nullptr)
     , m_toggleSidebarAction(nullptr)
-{
+    , m_trayIcon(nullptr) {
     SettingsManager::instance().load();
     setupUi();
     applySettings();
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
 }
 
-void MainWindow::setupUi()
-{
+void MainWindow::setupUi() {
     resize(700, 500);
     setWindowTitle(Constants::AppTitle);
 
@@ -83,6 +85,7 @@ void MainWindow::setupUi()
     mainLayout->addWidget(splitter);
 
     m_sidebarWidget = new QWidget();
+    m_sidebarWidget->setObjectName("sidebarWidget");
     QVBoxLayout *sidebarLayout = new QVBoxLayout(m_sidebarWidget);
     sidebarLayout->setContentsMargins(0, 0, 0, 0);
 
@@ -111,17 +114,26 @@ void MainWindow::setupUi()
     connect(m_toolList, &QListWidget::currentRowChanged, this, &MainWindow::onToolListClicked);
 
     m_toolList->setCurrentRow(0);
+
+    m_trayIcon = new QSystemTrayIcon(this);
+    connect(m_trayIcon, &QSystemTrayIcon::activated, this, &MainWindow::onTrayIconActivated);
+
+    QMenu *trayMenu = new QMenu(this);
+    QAction *showAction = new QAction("Show", this);
+    connect(showAction, &QAction::triggered, this, &QWidget::showNormal);
+    trayMenu->addAction(showAction);
+    trayMenu->addSeparator();
+    trayMenu->addAction(quitAction);
+    m_trayIcon->setContextMenu(trayMenu);
 }
 
-void MainWindow::onToolListClicked(int row)
-{
+void MainWindow::onToolListClicked(int row) {
     if (row >= 0) {
         m_contentStack->setCurrentIndex(row);
     }
 }
 
-void MainWindow::onAbout()
-{
+void MainWindow::onAbout() {
     QMessageBox msgBox(this);
     msgBox.setWindowTitle(QString("About %1").arg(Constants::AppTitle));
     msgBox.setText(QString("<h3>%1</h3>"
@@ -132,18 +144,17 @@ void MainWindow::onAbout()
     msgBox.exec();
 }
 
-void MainWindow::onQuit()
-{
+void MainWindow::onQuit() {
     qApp->quit();
 }
 
-void MainWindow::onToggleSidebar()
-{
-    m_sidebarWidget->setVisible(m_toggleSidebarAction->isChecked());
+void MainWindow::onToggleSidebar() {
+    bool visible = !m_sidebarWidget->isVisible();
+    m_sidebarWidget->setVisible(visible);
+    m_toggleSidebarAction->setChecked(visible);
 }
 
-void MainWindow::onOpenSettings()
-{
+void MainWindow::onOpenSettings() {
     SettingsDialog dialog(this);
     if (dialog.exec() == QDialog::Accepted) {
         applySettings();
@@ -152,8 +163,23 @@ void MainWindow::onOpenSettings()
     }
 }
 
-void MainWindow::applySettings()
-{
+void MainWindow::onTrayIconActivated(QSystemTrayIcon::ActivationReason reason) {
+    if (reason == QSystemTrayIcon::Trigger || reason == QSystemTrayIcon::DoubleClick) {
+        showNormal();
+        activateWindow();
+    }
+}
+
+void MainWindow::closeEvent(QCloseEvent *event) {
+    if (SettingsManager::instance().trayIconEnabled() && m_trayIcon->isVisible()) {
+        hide();
+        event->ignore();
+    } else {
+        event->accept();
+    }
+}
+
+void MainWindow::applySettings() {
     auto &settings = SettingsManager::instance();
 
     QFont font(settings.fontFamily());
@@ -169,4 +195,16 @@ void MainWindow::applySettings()
 
     m_sidebarWidget->setVisible(settings.sidebarVisible());
     m_toggleSidebarAction->setChecked(settings.sidebarVisible());
+
+    if (settings.trayIconEnabled()) {
+        QPixmap pixmap;
+        QString iconPath = QCoreApplication::applicationDirPath() + "/icons/app.png";
+        if (pixmap.load(iconPath)) {
+            m_trayIcon->setIcon(QIcon(pixmap));
+        }
+        m_trayIcon->setToolTip(Constants::AppTitle);
+        m_trayIcon->show();
+    } else {
+        m_trayIcon->hide();
+    }
 }
