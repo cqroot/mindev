@@ -82,6 +82,7 @@ void MainWindow::setupUi() {
 
     QSplitter *splitter = new QSplitter(Qt::Horizontal);
     QHBoxLayout *mainLayout = new QHBoxLayout(m_centralWidget);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->addWidget(splitter);
 
     m_sidebarWidget = new QWidget();

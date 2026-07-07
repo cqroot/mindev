@@ -1,12 +1,13 @@
-/* MinDev - Light Theme Stylesheet */
+/* MinDev - Mixed Theme Stylesheet */
+/* Dark sidebar, light main content */
 
 /* ===== Splitter Handle ===== */
 QSplitter::handle {
-    background-color: #d0d0d0;
+    background-color: #404040;
 }
 
 QSplitter::handle:hover {
-    background-color: #b0b0b0;
+    background-color: #505050;
 }
 
 /* ===== Color Palette ===== */
@@ -183,38 +184,39 @@ QDialog QDialogButtonBox QPushButton:pressed {
     background-color: #d0d0d0;
 }
 
+/* ===== Main Widget Background ===== */
 QWidget {
     background-color: #f5f5f5;
     color: #333333;
 }
 
-/* ===== Sidebar ===== */
+/* ===== Sidebar - Dark Theme ===== */
 #sidebarWidget {
-    background-color: #ffffff;
-    border-right: 1px solid #e0e0e0;
+    background-color: #2a2a2a;
+    border-right: 1px solid #404040;
 }
 
-QListWidget {
+#sidebarWidget QListWidget {
     background-color: transparent;
     border: none;
     outline: none;
     padding: 0;
 }
 
-QListWidget::item {
+#sidebarWidget QListWidget::item {
     padding: 8px 12px;
     border-radius: 6px;
     margin: 2px 4px;
-    color: #666666;
+    color: #a0a0a0;
 }
 
-QListWidget::item:selected {
-    background-color: #e0e0e0;
-    color: #333333;
+#sidebarWidget QListWidget::item:selected {
+    background-color: #404040;
+    color: #ffffff;
 }
 
-QListWidget::item:hover:!selected {
-    background-color: #e8e8e8;
+#sidebarWidget QListWidget::item:hover:!selected {
+    background-color: #353535;
 }
 
 /* ===== LineEdit ===== */

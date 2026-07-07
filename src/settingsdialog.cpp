@@ -42,12 +42,9 @@ void SettingsDialog::setupUi() {
     appearanceLayout->addRow("Font:", m_fontFamilyCombo);
 
     m_themeCombo = new QComboBox();
-    m_themeCombo->addItem("default");
     QStringList styleFiles = StyleManager::findAvailableStyles();
     for (const QString &style : styleFiles) {
-        if (style != "default") {
-            m_themeCombo->addItem(style);
-        }
+        m_themeCombo->addItem(style);
     }
     appearanceLayout->addRow("Theme:", m_themeCombo);
 
