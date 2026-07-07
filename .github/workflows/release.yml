@@ -135,6 +135,7 @@ jobs:
         run: |
           mkdir -p "${{ env.APP_DIR }}/icons"
           cp build/icons/app.png "${{ env.APP_DIR }}/icons/"
+          cp -r build/styles/ "${{ env.APP_DIR }}/"
 
       - name: "📦 Zip and Upload Artifact"
         run: |
