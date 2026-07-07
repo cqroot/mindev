@@ -1,0 +1,3 @@
+#ifdef _WIN32
+IDI_ICON1 ICON "icons/app.ico"
+#endif

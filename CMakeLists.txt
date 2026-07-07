@@ -10,7 +10,7 @@ set(CMAKE_AUTOMOC ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Svg)
 
-add_executable(${PROJECT_NAME}
+set(APP_SOURCES
     src/main.cpp
     src/settingsmanager.cpp
     src/settingsmanager.h
@@ -30,6 +30,12 @@ add_executable(${PROJECT_NAME}
     src/tools/subnetcalculatortool.cpp
     src/tools/subnetcalculatortool.h
 )
+
+if(WIN32)
+    list(APPEND APP_SOURCES "${CMAKE_SOURCE_DIR}/resources.rc")
+endif()
+
+add_executable(${PROJECT_NAME} ${APP_SOURCES})
 
 if(WIN32)
     set_property(TARGET ${PROJECT_NAME} PROPERTY WIN32_EXECUTABLE TRUE)

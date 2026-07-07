@@ -92,11 +92,26 @@ jobs:
       - name: "🧰 Checkout"
         uses: actions/checkout@v7
 
-      - name: "⚙️ Install rsvg-convert on Windows"
+      - name: "⚙️ Install rsvg-convert and ImageMagick on Windows"
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
           choco install rsvg-convert -y
+          choco install imagemagick -y
+
+      - name: "🎨 Generate ICO file"
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          rsvg-convert -w 256 -h 256 icons/app.svg -o icons/temp_256.png
+          rsvg-convert -w 128 -h 128 icons/app.svg -o icons/temp_128.png
+          rsvg-convert -w 96 -h 96 icons/app.svg -o icons/temp_96.png
+          rsvg-convert -w 64 -h 64 icons/app.svg -o icons/temp_64.png
+          rsvg-convert -w 48 -h 48 icons/app.svg -o icons/temp_48.png
+          rsvg-convert -w 32 -h 32 icons/app.svg -o icons/temp_32.png
+          rsvg-convert -w 16 -h 16 icons/app.svg -o icons/temp_16.png
+          magick icons/temp_*.png -background transparent -alpha on -define icon:auto-resize="256,128,96,64,48,32,16" icons/app.ico
+          rm -f icons/temp_*.png
 
       - name: "⚙️ Install Qt"
         uses: jurplel/install-qt-action@v4
@@ -127,10 +142,10 @@ jobs:
 
       - name: "📦 Deploy Qt Dependencies"
         run: |
-          windeployqt --release --compiler-runtime "${{ env.APP_DIR }}\${{ env.APP_NAME }}.exe"
+          windeployqt --release "${{ env.APP_DIR }}\${{ env.APP_NAME }}.exe"
         shell: cmd
 
-      - name: "📦 Copy icons"
+      - name: "📦 Copy assets"
         shell: bash
         run: |
           mkdir -p "${{ env.APP_DIR }}/icons"
