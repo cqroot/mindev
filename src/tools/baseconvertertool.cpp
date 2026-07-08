@@ -5,7 +5,6 @@
 #include <QLabel>
 #include <QGroupBox>
 #include <QVBoxLayout>
-#include <QHBoxLayout>
 #include <QFormLayout>
 #include <QRegularExpressionValidator>
 

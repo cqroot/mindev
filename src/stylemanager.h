@@ -1,8 +1,9 @@
 #ifndef STYLEMANAGER_H
 #define STYLEMANAGER_H
 
-#include <QApplication>
 #include <QString>
+
+class QApplication;
 
 class StyleManager {
   public:

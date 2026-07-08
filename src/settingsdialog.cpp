@@ -6,12 +6,9 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QDialogButtonBox>
-#include <QDir>
 #include <QFontDatabase>
 #include <QFormLayout>
 #include <QGroupBox>
-#include <QHBoxLayout>
-#include <QHeaderView>
 #include <QPushButton>
 #include <QVBoxLayout>
 

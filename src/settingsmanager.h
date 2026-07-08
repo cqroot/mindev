@@ -1,7 +1,6 @@
 #ifndef SETTINGSMANAGER_H
 #define SETTINGSMANAGER_H
 
-#include <QFont>
 #include <QSettings>
 
 class SettingsManager {
